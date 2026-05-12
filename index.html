@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Leaflet preview</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body,
+		#map {
+			width: 100%;
+			height: 100%;
+			background-color: #143d6b;
+			/* background-color: #0fa8d2; */
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<script>
+		var map = L.map('map', { attributionControl: false }).setView([-0.008, 0], 15); 
+		L.control.attribution({ prefix: false }).addTo(map);
+		// map attribution customize
+		map.attributionControl.setPrefix('the State of San Andreas | GTA V');
+		var atlas = L.tileLayer('basemap/atlas/{z}/{x}/{y}.png', { minZoom: 14, maxZoom: 18, tms: false });
+		var satellite = L.tileLayer('basemap/satellite/{z}/{x}/{y}.png', { minZoom: 14, maxZoom: 18, tms: false });
+		satellite.addTo(map);
+		var baseMaps = {
+			"Streets": atlas,
+			"Satellite": satellite
+		};
+		L.control.layers(baseMaps, null, { collapsed: false}).addTo(map);
+
+		// if baseMaps change to atlas, set the background color to #0fa8d2, otherwise set it to #143d6b
+		map.on('baselayerchange', function (e) {
+			if (e.name === 'Streets') {
+				document.getElementById('map').style.backgroundColor = '#0fa8d2';
+			} else {
+				document.getElementById('map').style.backgroundColor = '#143d6b';
+			}
+		});
+	</script>
+</body>
+
+</html>
